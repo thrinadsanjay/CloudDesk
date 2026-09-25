@@ -1,0 +1,19 @@
+{
+  "name": "clouddesktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lightweight browser gateway for Debian xrdp (Guacamole-lite)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "guacamole-lite": "^1.2.0",
+    "helmet": "^8.1.0"
+  }
+}

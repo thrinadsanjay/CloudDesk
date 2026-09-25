@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Admin · Cloud Desktop</title>
+    <link rel="stylesheet" href="/styles.css?v=mobile" />
+  </head>
+  <body class="admin-body">
+    <div class="login-stars" aria-hidden="true"></div>
+    <header class="app-chrome">
+      <div class="app-chrome-brand">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M8 20h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <strong>Cloud Desktop</strong>
+      </div>
+      <div class="app-chrome-end">
+        <nav class="console-switch" aria-label="Console">
+          <a href="/">Desktops</a>
+          <a class="is-on" href="/admin" aria-current="page">Admin</a>
+        </nav>
+        <div class="gate-userbar">
+          <span id="gate-avatar" class="gate-avatar" aria-hidden="true">A</span>
+          <span id="gate-who">admin</span>
+          <button type="button" id="logout-btn" class="sign-out-btn">Sign out</button>
+        </div>
+      </div>
+    </header>
+    <section id="admin-app" class="ac-shell hidden">
+      <aside class="ac-sidebar">
+        <div class="ac-brand-row">
+          <svg class="ac-logo" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M8 20h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <strong>Cloud Desktop</strong>
+            <span>Admin Console</span>
+          </div>
+        </div>
+        <nav class="ac-nav" aria-label="Admin">
+          <button type="button" class="nav-page is-on" data-view="dashboard">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="3" width="8" height="5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="10" width="8" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+            Dashboard
+          </button>
+          <button type="button" class="nav-page" data-view="sessions">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v5l3 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Sessions
+          </button>
+          <button type="button" class="nav-page" data-view="users">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 19c1.2-3 3.5-4.5 6.5-4.5s5.3 1.5 6.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Users
+          </button>
+          <button type="button" class="nav-page" data-view="branding">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M7 17l3.2-3.2 2.3 2.3 3-3.6L21 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Branding
+          </button>
+          <button type="button" class="nav-page" data-view="audit">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 9h6M9 13h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Audit Logs
+          </button>
+        </nav>
+      </aside>
+
+      <div class="ac-main">
+        <header class="ac-top">
+          <div>
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-sub">Overview of your desktops and gateway</p>
+          </div>
+          <div class="ac-top-actions">
+            <button type="button" id="new-btn" class="ac-primary">+ Add Session</button>
+            <div class="ac-bell-wrap">
+              <button type="button" id="alerts-btn" class="ac-bell" aria-label="Status alerts" aria-expanded="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 18a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <span id="alerts-badge" class="ac-badge" hidden>0</span>
+              </button>
+              <div id="alerts-menu" class="ac-alerts hidden"></div>
+            </div>
+          </div>
+        </header>
+
+        <section id="dashboard-view" data-view="dashboard">
+          <div class="ac-stats" id="stat-cards"></div>
+          <div class="ac-split">
+            <div class="ac-card">
+              <div class="ac-card-head">
+                <h2>Machines</h2>
+                <div class="ac-filters">
+                  <label class="ac-search">
+                    <span class="sr-only">Search machines</span>
+                    <input id="machine-search" placeholder="Search machines..." />
+                  </label>
+                  <select id="machine-status">
+                    <option value="all">All Status</option>
+                    <option value="available">Online</option>
+                    <option value="in-use">In Use</option>
+                    <option value="unavailable">Offline</option>
+                  </select>
+                  <select id="machine-os">
+                    <option value="all">All OS</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ac-table-wrap">
+                <table class="ac-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>OS</th>
+                      <th>Protocol</th>
+                      <th>Host / IP</th>
+                      <th>Status</th>
+                      <th>Last Seen</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="machine-rows"></tbody>
+                </table>
+              </div>
+              <div class="ac-pager" id="machine-pager"></div>
+            </div>
+            <div class="ac-split-line" aria-hidden="true"></div>
+            <div class="ac-card">
+              <div class="ac-card-head">
+                <div>
+                  <h2>Recent Sessions</h2>
+                  <p class="hint">Last 24 hours through this gateway.</p>
+                </div>
+              </div>
+              <div class="ac-table-wrap">
+                <table class="ac-table">
+                  <thead>
+                    <tr>
+                      <th>Desktop</th>
+                      <th>App user</th>
+                      <th>Source IP</th>
+                      <th>Session time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-sessions"></tbody>
+                </table>
+              </div>
+              <button type="button" class="ac-link" data-view="sessions">View all sessions →</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="sessions-view" class="ac-card hidden" data-view="sessions">
+          <div class="ac-card-head">
+            <div>
+              <h2>Sessions</h2>
+              <p class="hint">Last 24 hours through this gateway. Local console logins are not shown. Active sessions stay at the top.</p>
+            </div>
+          </div>
+          <div class="ac-table-wrap">
+            <table class="ac-table">
+              <thead>
+                <tr>
+                  <th>Desktop</th>
+                  <th>App user</th>
+                  <th>Machine user</th>
+                  <th>Source IP</th>
+                  <th>Started</th>
+                  <th>Session time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="session-rows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="users-view" class="hidden" data-view="users">
+          <div class="ac-card">
+            <div class="ac-card-head">
+              <div>
+                <h2>Gateway users</h2>
+                <p class="hint">
+                  These accounts unlock the machine list. They are not desktop logins.
+                  Assign which desktops each person may see. Machine passwords stay on the PCs.
+                </p>
+              </div>
+              <button type="button" id="user-add-btn" class="ac-primary">+ Add User</button>
+            </div>
+            <div class="ac-table-wrap">
+              <table class="ac-table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Display name</th>
+                    <th>Role</th>
+                    <th>Desktops</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="user-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="branding-view" class="hidden" data-view="branding">
+          <div class="ac-card brand-hero-card">
+            <div class="brand-hero">
+              <div class="brand-hero-copy">
+                <h2>Login graphic</h2>
+                <p class="hint">Choose an image to display on the user login page.</p>
+                <form id="hero-form" class="brand-hero-form">
+                  <label>
+                    <span>Login image</span>
+                    <span class="field">
+                      <select name="file" id="hero-file"></select>
+                    </span>
+                  </label>
+                  <button type="submit" id="hero-save-btn" class="ac-primary">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 4h11l3 3v13H5V4z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 4v5h8V4M8 20v-6h8v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+                    Save login graphic
+                  </button>
+                  <label class="brand-file-link">
+                    <input id="hero-upload" type="file" accept="image/png,image/webp,image/jpeg,image/svg+xml,.png,.webp,.jpg,.jpeg,.svg" />
+                    Upload a new image to logos/images/
+                  </label>
+                  <p id="hero-form-error" class="error" hidden></p>
+                </form>
+              </div>
+              <div class="brand-hero-art">
+                <div class="hero-preview-frame">
+                  <img id="hero-preview-image" alt="">
+                  <span id="hero-preview-empty" class="hero-preview-empty">No image selected</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="brand-split">
+            <div class="ac-card">
+              <div class="ac-card-head">
+                <div>
+                  <h2>OS mappings</h2>
+                  <p class="hint">Display name, platform family, and logo for each OS id.</p>
+                </div>
+                <button type="button" id="os-add-btn" class="ac-primary">+ Add Mapping</button>
+              </div>
+              <div class="ac-table-wrap">
+                <table class="ac-table">
+                  <thead>
+                    <tr>
+                      <th>OS</th>
+                      <th>Display name</th>
+                      <th>Platform</th>
+                      <th>Logo file</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="os-mapping-rows"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="ac-card">
+              <h2>OS logos</h2>
+              <p class="hint">PNG, SVG, WebP, or JPEG up to 2MB. Saved into <code>logos/</code>. Recommended 512×512.</p>
+              <div id="logo-grid" class="logo-grid"></div>
+              <label class="logo-drop">
+                <input id="logo-upload" type="file" accept="image/png,image/webp,image/jpeg,image/svg+xml,.png,.webp,.jpg,.jpeg,.svg" hidden />
+                <strong>Drag and drop a logo here, or click to browse.</strong>
+                <span>OS icons only. Login images go in logos/images/.</span>
+              </label>
+              <p id="logo-upload-error" class="error" hidden></p>
+            </div>
+          </div>
+        </section>
+
+        <section id="audit-view" class="ac-card hidden" data-view="audit">
+          <div class="ac-card-head">
+            <div>
+              <h2>Audit Logs</h2>
+              <p class="hint">Last 24 hours of session open and close events from this gateway process. They are not written to disk and reset on restart.</p>
+            </div>
+          </div>
+          <div class="ac-table-wrap">
+            <table class="ac-table">
+              <thead>
+                <tr>
+                  <th>When</th>
+                  <th>App user</th>
+                  <th>Source IP</th>
+                  <th>Desktop</th>
+                  <th>Session time</th>
+                  <th>Event</th>
+                </tr>
+              </thead>
+              <tbody id="audit-rows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div id="desktop-modal" class="ac-modal hidden" role="dialog" aria-modal="true" aria-labelledby="form-title">
+      <button type="button" class="ac-modal-backdrop" data-close-modal aria-label="Close"></button>
+      <form id="desktop-form" class="ac-modal-card">
+        <input type="hidden" name="id" />
+        <div class="ac-card-head">
+          <div>
+            <h2 id="form-title">Add Session</h2>
+            <p class="hint" id="form-kicker">Configure a new session to allow users to connect.</p>
+          </div>
+          <span class="status-pill" id="form-status" hidden>
+            <i class="bubble"></i>
+            <span id="form-status-label"></span>
+          </span>
+        </div>
+        <div class="ac-form-grid">
+          <label>
+            <span>Name</span>
+            <span class="field"><input name="name" placeholder="e.g. Office PC" required /></span>
+          </label>
+          <label>
+            <span>Host or IP</span>
+            <span class="field"><input name="host" placeholder="e.g. 192.168.0.20" required /></span>
+          </label>
+          <label>
+            <span>Protocol / Port</span>
+            <span class="field field-split">
+              <select name="protocol" id="protocol-select" aria-label="Protocol">
+                <option value="rdp">RDP</option>
+                <option value="ssh">SSH</option>
+              </select>
+              <input name="port" type="text" inputmode="numeric" pattern="[0-9]{1,5}" maxlength="5" value="3389" autocomplete="off" required aria-label="Port" />
+            </span>
+          </label>
+          <label>
+            <span>OS / Platform</span>
+            <span class="field">
+              <select name="os" id="os-select" required></select>
+            </span>
+          </label>
+        </div>
+        <p class="hint">Users enter that machine’s username and password on the login page. This console does not store desktop passwords.</p>
+        <div class="form-actions ac-form-foot">
+          <button type="button" id="form-cancel" class="ac-secondary">Cancel</button>
+          <button type="submit" id="save-btn" class="ac-primary">Save</button>
+          <button type="button" id="delete-btn" class="danger-btn hidden">Delete</button>
+        </div>
+        <p id="admin-form-error" class="error" hidden></p>
+      </form>
+    </div>
+
+    <div id="os-modal" class="ac-modal hidden" role="dialog" aria-modal="true" aria-labelledby="os-form-title">
+      <button type="button" class="ac-modal-backdrop" data-close-os-modal aria-label="Close"></button>
+      <form id="os-form" class="ac-modal-card">
+        <input type="hidden" name="originalId" />
+        <div class="ac-card-head">
+          <div>
+            <h2 id="os-form-title">Add OS mapping</h2>
+            <p class="hint" id="os-form-kicker">The OS id is used in the desktop list. The logo file should live in logos/.</p>
+          </div>
+        </div>
+        <div class="ac-form-grid">
+          <label>
+            <span>OS id</span>
+            <span class="field"><input name="id" placeholder="debian" required /></span>
+          </label>
+          <label>
+            <span>Display name</span>
+            <span class="field"><input name="label" placeholder="Debian" required /></span>
+          </label>
+          <label>
+            <span>Platform</span>
+            <span class="field">
+              <select name="family">
+                <option value="linux">Linux</option>
+                <option value="windows">Windows</option>
+              </select>
+            </span>
+          </label>
+          <label>
+            <span>Logo file</span>
+            <span class="field">
+              <select name="file" id="logo-file"></select>
+            </span>
+          </label>
+        </div>
+        <div class="form-actions ac-form-foot">
+          <button type="button" id="os-reset-btn" class="ac-secondary">Cancel</button>
+          <button type="submit" id="os-save-btn" class="ac-primary">Save mapping</button>
+        </div>
+        <p id="os-form-error" class="error" hidden></p>
+      </form>
+    </div>
+
+    <div id="user-modal" class="ac-modal hidden" role="dialog" aria-modal="true" aria-labelledby="user-form-title">
+      <button type="button" class="ac-modal-backdrop" data-close-user-modal aria-label="Close"></button>
+      <form id="user-form" class="ac-modal-card">
+        <input type="hidden" name="id" />
+        <div class="ac-card-head">
+          <div>
+            <h2 id="user-form-title">Add User</h2>
+            <p class="hint" id="user-form-kicker">This signs them into the gateway. They still type the machine password to open RDP or SSH.</p>
+          </div>
+        </div>
+        <div class="ac-form-grid">
+          <label>
+            <span>Username</span>
+            <span class="field"><input name="username" placeholder="sanjay" required /></span>
+          </label>
+          <label>
+            <span>Display name</span>
+            <span class="field"><input name="displayName" placeholder="Sanjay" /></span>
+          </label>
+          <label>
+            <span>Password</span>
+            <span class="field"><input name="password" type="password" autocomplete="new-password" /></span>
+          </label>
+          <label class="user-enabled">
+            <span>Status</span>
+            <span class="user-switch">
+              <input name="enabled" type="checkbox" role="switch" checked aria-label="Account enabled" />
+              <span class="user-switch-track" aria-hidden="true"></span>
+              <span class="user-switch-copy" data-on="Enabled" data-off="Disabled"></span>
+            </span>
+          </label>
+          <label class="user-enabled">
+            <span>Administrator</span>
+            <span class="user-switch">
+              <input name="admin" type="checkbox" role="switch" aria-label="Administrator" />
+              <span class="user-switch-track" aria-hidden="true"></span>
+              <span class="user-switch-copy" data-on="Admin" data-off="User"></span>
+            </span>
+          </label>
+        </div>
+        <p class="hint">Assigned desktops</p>
+        <div id="user-desktop-picks" class="user-picks"></div>
+        <div class="form-actions ac-form-foot">
+          <button type="button" id="user-cancel" class="ac-secondary">Cancel</button>
+          <button type="submit" id="user-save-btn" class="ac-primary">Save user</button>
+        </div>
+        <p id="user-form-error" class="error" hidden></p>
+      </form>
+    </div>
+    <footer class="site-footer">
+      <div class="brand-features">
+        <div>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3l7 3v6c0 4.4-2.9 8.3-7 9.4C7.9 20.3 5 16.4 5 12V6l7-3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8.6 12 2.3 2.3 4.5-4.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <strong>Private</strong>
+          <small>Stays on your network</small>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M13 3 6 14h5l-1 7 8-12h-5l1-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <strong>Fast</strong>
+          <small>Optimized performance</small>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 20h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <strong>Universal</strong>
+          <small>Linux &amp; Windows</small>
+        </div>
+      </div>
+      <div class="status-bar">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><rect x="6" y="11" width="12" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        On your network
+        <span>·</span>
+        RDP &amp; SSH over HTML5
+      </div>
+    </footer>
+    <script src="/admin.js?v=mobile"></script>
+  </body>
+</html>

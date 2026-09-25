@@ -1,0 +1,56 @@
+services:
+  guacd:
+    image: guacamole/guacd:1.6.0
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 4822"]
+      interval: 10s
+      timeout: 3s
+      retries: 8
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      guacd:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${WEB_PORT:-9080}:9080"
+      - "${TLS_PORT:-9443}:9443"
+    volumes:
+      - ./certs:/certs:ro
+      - ./data:/app/data
+      - ./logos:/app/logos
+      - /run/systemd/sessions:/host/sessions:ro
+    environment:
+      WEB_PORT: "9080"
+      TLS_PORT: "9443"
+      TLS_CERT: /certs/cert.pem
+      TLS_KEY: /certs/key.pem
+      DATA_DIR: /app/data
+      LOGOS_DIR: /app/logos
+      HOST_SESSIONS_DIR: /host/sessions
+      DISPLAY_HOSTNAME: ${DISPLAY_HOSTNAME:-pve}
+      GUACD_HOST: guacd
+      GUACD_PORT: "4822"
+      RDP_HOST: ${RDP_HOST:-host.docker.internal}
+      RDP_PORT: ${RDP_PORT:-3389}
+      GATE_PASSWORD: ${GATE_PASSWORD:-}
+      RDP_USERNAME: ${RDP_USERNAME:-}
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      TOKEN_KEY: ${TOKEN_KEY}
+      DESKTOP_NAME: ${DESKTOP_NAME:-Debian Desktop}
+      LOG_LEVEL: ${LOG_LEVEL:-NORMAL}
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:9080/api/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 8
